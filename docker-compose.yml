@@ -11,7 +11,7 @@ volumes:
 
 services:
   gvm-postgres:
-    image: admirito/gvm-postgres:21
+    image: qcode/gvm-postgres:1
     environment:
       PGDATA: /var/lib/postgresql/data
       POSTGRES_DB: gvmd
@@ -46,7 +46,7 @@ services:
         condition: service_started
 
   gsad:
-    image: admirito/gsad:21
+    image: qcode/gsad:1
     volumes:
       - run-gvm:/run/gvm
     ports:
@@ -63,7 +63,7 @@ services:
   openvas:
     # LISTENING /run/ospd/ospd.sock
     # CONNECTED /run/redis/redis.sock
-    image: admirito/openvas-scanner:21
+    image: qcode/openvas-scanner:1
     privileged: true
     sysctls:
       net.core.somaxconn: '2048'

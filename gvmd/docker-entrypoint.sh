@@ -42,10 +42,12 @@ if [ "$1" = 'gvmd' ]; then
 	gvmd --user="${GVMD_USER:-admin}" --new-password="${GVMD_PASSWORD}" || true
     fi
 
-    DEFAULT_SCANNER=$(gvmd --get-scanners | grep Default | cut -f1 -d" ")
-    gvmd --modify-scanner=$DEFAULT_SCANNER --scanner-host=/var/run/ospd/ospd.sock
+    DEFAULT_SCANNER=$(gvmd --get-scanners | grep Default | cut -f1 -d" ") || true
+    [ -n "$DEFAULT_SCANNER" ] && echo "Default scanner found: $DEFAULT_SCANNER"
+    [ -n "$DEFAULT_SCANNER" ] && gvmd --modify-scanner=$DEFAULT_SCANNER --scanner-host=/var/run/ospd/ospd.sock
     ADMIN_UUID=$(gvmd --get-users --verbose | grep "^${GVMD_USER:-admin}" | sed "s/${GVMD_USER:-admin}\s*//") || true
-    [ -n "$ADMIN_UUID" ] && gvmd --modify-setting 78eceaec-3385-11ea-b237-28d24461215b --value $ADMIN_UUID || true
+    [ -n "$ADMIN_UUID" ] && echo "Admin uuid found: $ADMIN_UUID"
+    [ -n "$ADMIN_UUID" ] && gvmd --modify-setting 78eceaec-3385-11ea-b237-28d24461215b --value $ADMIN_UUID
 
     echo "setting up msmtp...."
     echo -e "# managed by docker-entrypoint.sh" > /etc/msmtprc
