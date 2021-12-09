@@ -22,7 +22,7 @@ services:
 
   gvmd:
     # CONNECTED /run/ospd/ospd.sock
-    image: admirito/gvmd:21
+    image: qcode/gvmd:1
     environment:
       GVMD_POSTGRESQL_URI: postgresql://gvmduser:mypassword@gvm-postgres:5432/gvmd?application_name=gvmd
       # see https://marlam.de/msmtp/ for possible configuration options for the default system account

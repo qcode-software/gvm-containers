@@ -42,6 +42,8 @@ if [ "$1" = 'gvmd' ]; then
 	gvmd --user="${GVMD_USER:-admin}" --new-password="${GVMD_PASSWORD}" || true
     fi
 
+    DEFAULT_SCANNER=$(gvmd --get-scanners | grep Default | cut -f1 -d" ")
+    gvmd --modify-scanner=$DEFAULT_SCANNER --scanner-host=/var/run/ospd/ospd.sock
     ADMIN_UUID=$(gvmd --get-users --verbose | grep "^${GVMD_USER:-admin}" | sed "s/${GVMD_USER:-admin}\s*//") || true
     [ -n "$ADMIN_UUID" ] && gvmd --modify-setting 78eceaec-3385-11ea-b237-28d24461215b --value $ADMIN_UUID || true
 
